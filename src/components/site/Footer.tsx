@@ -11,7 +11,7 @@ export function Footer() {
             منصة عربية مجانية لفصل الموسيقى عن الصوت البشري بالذكاء الاصطناعي، مع خصوصية كاملة.
           </p>
         </div>
-        <nav className="grid grid-cols-2 gap x-10 gap-y-2 text-sm sm:grid-cols-3" aria-label="روابط التذييل">
+        <nav className="grid grid-cols-2 gap-x-10 gap-y-2 text-sm sm:grid-cols-3" aria-label="روابط التذييل">
           <a href="/#top" className="text-muted-foreground hover:text-foreground">الرئيسية</a>
           <a href="/#how" className="text-muted-foreground hover:text-foreground">كيف يعمل؟</a>
           <a href="/#features" className="text-muted-foreground hover:text-foreground">المميزات</a>
