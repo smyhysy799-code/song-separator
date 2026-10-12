@@ -1,24 +1,41 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Navbar } from "@/components/site/Navbar";
+import { EngineNote, Faq, Features, Hero, HowItWorks } from "@/components/site/Sections";
+import { Footer } from "@/components/site/Footer";
+import { Reveal } from "@/components/site/Reveal";
+import { Studio } from "@/components/studio/Studio";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "صوتي — افصل الموسيقى عن الصوت البشري بالذكاء الاصطناعي مجانًا" },
+      { name: "description", content: "أزل الموسيقى من الأغاني ومقاطع الفيديو واحتفظ بالغناء والكلام، باستخدام نموذج Demucs داخل متصفحك وبخصوصية كاملة." },
+      { property: "og:title", content: "صوتي — صوتك بوضوح... وموسيقاك باختيارك" },
+      { property: "og:description", content: "فصل الموسيقى عن الصوت البشري في الصوتيات والفيديو بالذكاء الاصطناعي، مجانًا وداخل متصفحك." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <section id="studio" className="scroll-mt-24 px-3 pb-8 sm:px-4">
+          <Reveal className="mx-auto -mt-6 max-w-4xl">
+            <Studio />
+            <EngineNote />
+          </Reveal>
+        </section>
+        <HowItWorks />
+        <Features />
+        <Faq />
+      </main>
+      <Footer />
+    </>
   );
 }
