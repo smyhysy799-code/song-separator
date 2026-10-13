@@ -6,11 +6,11 @@ export interface ResultUrls {
   original: string;
   vocals: string;
   music: string;
-  video?: string;
-  videoExt?: string;
+  video?: string | undefined;
+  videoExt?: string | undefined;
   vocalsWav: Blob;
   musicWav: Blob;
-  videoBlob?: Blob;
+  videoBlob?: Blob | undefined;
   duration: number;
 }
 

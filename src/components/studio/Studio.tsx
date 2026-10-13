@@ -156,7 +156,7 @@ function Steps({ current }: { current: number }) {
   );
 }
 
-function FileCard({ file, kind, onChange }: { file: File; kind: "audio" | "video"; onChange?: () => void }) {
+function FileCard({ file, kind, onChange }: { file: File; kind: "audio" | "video"; onChange?: (() => void) | undefined }) {
   const Icon = kind === "video" ? FileVideo : FileAudio;
   return (
     <div className="flex items-center gap-4 rounded-2xl border border-lilac-100 bg-card p-4 shadow-soft">
@@ -176,7 +176,7 @@ function FileCard({ file, kind, onChange }: { file: File; kind: "audio" | "video
   );
 }
 
-function Progress({ stage, progress, detail, onCancel }: { stage: Stage; progress: number | null; detail?: string; onCancel: () => void }) {
+function Progress({ stage, progress, detail, onCancel }: { stage: Stage; progress: number | null; detail?: string | undefined; onCancel: () => void }) {
   const activeIndex = STAGES.findIndex((s) => s.key.includes(stage));
   return (
     <div className="rounded-2xl border border-lilac-100 bg-card p-5 shadow-soft sm:p-6" aria-live="polite">

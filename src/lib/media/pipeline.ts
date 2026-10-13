@@ -9,14 +9,14 @@ export interface StageUpdate {
   stage: Stage;
   /** Real progress 0..1 when measurable, null for an indeterminate step. */
   progress: number | null;
-  detail?: string;
+  detail?: string | undefined;
 }
 
 export interface SeparationResult {
   duration: number;
   vocalsWav: Blob;
   musicWav: Blob;
-  video?: { blob: Blob; extension: string };
+  video?: { blob: Blob; extension: string } | undefined;
 }
 
 export class PipelineError extends Error {
@@ -120,8 +120,8 @@ export async function separateMedia(
   const ml = new Float32Array(left.length);
   const mr = new Float32Array(left.length);
   for (let i = 0; i < left.length; i++) {
-    ml[i] = left[i] - vl[i];
-    mr[i] = right[i] - vr[i];
+    ml[i] = left[i]! - vl[i]!;
+    mr[i] = right[i]! - vr[i]!;
   }
   const vocalsWav = encodeWav([vl, vr], SAMPLE_RATE);
   const musicWav = encodeWav([ml, mr], SAMPLE_RATE);
