@@ -9,7 +9,7 @@ export interface StageUpdate {
   stage: Stage;
   /** Real progress 0..1 when measurable, null for an indeterminate step. */
   progress: number | null;
-  detail?: string;
+  detail?: string | undefined;
 }
 
 export interface SeparationResult {
