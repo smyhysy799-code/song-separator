@@ -2,7 +2,7 @@
 // Runs HT-Demucs (ONNX) fully inside the user's browser, off the main thread.
 import { MODEL_SIZE_BYTES, MODEL_URL } from "./constants";
 
-const ORT_BASE = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/";
+const ORT_BASE = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/";
 const CACHE_NAME = "sawti-models-v1";
 const N = 343_980; // model segment: 7.8 s @ 44.1 kHz, fixed by the graph
 const OVERLAP = Math.floor(N / 4);
@@ -56,7 +56,7 @@ async function fetchModel(): Promise<Uint8Array> {
   post({ type: "download", loaded, total: loaded, cached: false });
   if (cache) {
     try {
-      await cache.put(MODEL_URL, new Response(bytes.slice()));
+      await cache.put(MODEL_URL, new Response(bytes));
     } catch {
       /* storage quota — model will just be downloaded again next time */
     }
@@ -77,7 +77,7 @@ async function ensureSession() {
   post({ type: "stage", stage: "init" });
   session = await ort.InferenceSession.create(bytes, {
     executionProviders: ["wasm"],
-    graphOptimizationLevel: "all",
+    graphOptimizationLevel: "disabled", // "basic"/"all" crash (OOM) on this graph in WASM,
   });
 }
 
@@ -114,18 +114,18 @@ async function separate(left: Float32Array, right: Float32Array) {
     const base = VOCALS_ROW * 2 * N;
     for (let s = 0; s < len; s++) {
       // First/last chunk keep full weight at the file edges
-      const w = (i === 0 && s < OVERLAP) || (i === chunks - 1 && s >= len - OVERLAP) ? 1 : win[s];
-      outL[start + s] += stems[base + s] * w;
-      outR[start + s] += stems[base + N + s] * w;
-      weight[start + s] += w;
+      const w = (i === 0 && s < OVERLAP) || (i === chunks - 1 && s >= len - OVERLAP) ? 1 : win[s]!;
+      outL[start + s]! += stems[base + s]! * w;
+      outR[start + s]! += stems[base + N + s]! * w;
+      weight[start + s]! += w;
     }
     tensor.dispose?.();
     post({ type: "progress", done: i + 1, total: chunks });
   }
   for (let s = 0; s < total; s++) {
     const w = weight[s] || 1;
-    outL[s] /= w;
-    outR[s] /= w;
+    outL[s]! /= w;
+    outR[s]! /= w;
   }
   return [outL, outR] as const;
 }

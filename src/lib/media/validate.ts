@@ -19,7 +19,7 @@ function sniffContainer(b: Uint8Array): string | null {
   if (b.length < 12) return null;
   if (ascii(b, 0, 4) === "RIFF" && ascii(b, 8, 4) === "WAVE") return "wav";
   if (ascii(b, 0, 3) === "ID3") return "mp3";
-  if (b[0] === 0xff && (b[1] & 0xe0) === 0xe0) return "mp3"; // MPEG frame sync (also raw AAC ADTS)
+  if (b[0] === 0xff && ((b[1] ?? 0) & 0xe0) === 0xe0) return "mp3"; // MPEG frame sync (also raw AAC ADTS)
   if (ascii(b, 4, 4) === "ftyp") {
     const brand = ascii(b, 8, 4);
     if (brand.startsWith("M4A") || brand.startsWith("M4B")) return "m4a";

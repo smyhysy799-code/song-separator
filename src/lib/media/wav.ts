@@ -22,9 +22,9 @@ export function encodeWav(channels: [Float32Array, Float32Array], sampleRate: nu
   let off = 44;
   const [l, r] = channels;
   for (let i = 0; i < n; i++) {
-    let v = Math.max(-1, Math.min(1, l[i]));
+    let v = Math.max(-1, Math.min(1, l[i]!));
     view.setInt16(off, v < 0 ? v * 0x8000 : v * 0x7fff, true);
-    v = Math.max(-1, Math.min(1, r[i]));
+    v = Math.max(-1, Math.min(1, r[i]!));
     view.setInt16(off + 2, v < 0 ? v * 0x8000 : v * 0x7fff, true);
     off += 4;
   }
